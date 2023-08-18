@@ -12,10 +12,29 @@ async function getTopPicks() {
 
         const $ = cheerio.load(data)
         const elemSelector = "#pool_list > div > div > div.content_element.row.w-100 > div > div.poolList > a > div > div"
+
+        const keys = [
+            "matchup",
+            "time",
+            "teamone",
+            "draw",
+            "teamtwo",
+            "highpercentileodds",
+            "prediction"
+        ]
+
+
         $(elemSelector).each((parentIdx, parentElem) => {
+            let keyIdx = 0
+            const betobj = {}
             $(parentElem).children().each((childIdx, childElem) => {
-                console.log($(childElem).text())
+                const itemrowVal = $(childElem).text()
+                if (itemrowVal) {
+                    betobj[keys[keyIdx]] = itemrowVal
+                    keyIdx++
+                }
             })
+            console.log(betobj)
         })
     } catch (err) {
         console.error(err)
